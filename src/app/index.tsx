@@ -1,98 +1,281 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+export default function Home() {
+  const router = useRouter();
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.conteudo}
+    >
+      {/* Cabeçalho */}
+      <View style={styles.cabecalho}>
+        <View>
+          <Text style={styles.saudacao}>Olá! </Text>
+          <Text style={styles.nome}>Bem-vindo de volta</Text>
+        </View>
 
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+        <Pressable
+          style={styles.botaoPerfil}
+          onPress={() => router.push("/perfil")}
+        >
+          <Ionicons name="person" size={24} color="#f0f0f0" />
+        </Pressable>
+      </View>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+      {/* Card de pontos */}
+      <View style={styles.cardPontos}>
+        <View style={styles.iconePontos}>
+          <Ionicons name="star" size={28} color="#F5B800" />
+        </View>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+        <View>
+          <Text style={styles.labelPontos}>Meus pontos</Text>
+          <Text style={styles.numeroPontos}>0</Text>
+        </View>
+      </View>
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+      {/* Resumo */}
+      <Text style={styles.tituloSecao}>Meu progresso</Text>
+
+      <View style={styles.resumoContainer}>
+        <View style={styles.cardResumo}>
+          <View style={styles.iconeTarefa}>
+            <Ionicons name="checkmark-circle" size={25} color="#2E7D32" />
+          </View>
+
+          <Text style={styles.numeroResumo}>0</Text>
+          <Text style={styles.labelResumo}>Concluídas</Text>
+        </View>
+
+        <View style={styles.cardResumo}>
+          <View style={styles.iconePendente}>
+            <Ionicons name="time" size={25} color="#EF6C00" />
+          </View>
+
+          <Text style={styles.numeroResumo}>0</Text>
+          <Text style={styles.labelResumo}>Pendentes</Text>
+        </View>
+
+        <View style={styles.cardResumo}>
+          <View style={styles.iconeAtrasada}>
+            <Ionicons name="alert-circle" size={25} color="#f80c0c" />
+          </View>
+
+          <Text style={styles.numeroResumo}>0</Text>
+          <Text style={styles.labelResumo}>Pendentes</Text>
+        </View>
+      </View>
+
+      {/* Ações */}
+      <Text style={styles.tituloSecao}>Acessar</Text>
+
+      <Pressable
+        style={styles.cardAcao}
+        onPress={() => router.push("/tarefas")}
+      >
+        <View style={styles.iconeAcao}>
+          <Ionicons name="list" size={26} color="#f0f0f0" />
+        </View>
+
+        <View style={styles.textosAcao}>
+          <Text style={styles.tituloAcao}>Minhas tarefas</Text>
+          <Text style={styles.subtituloAcao}>Veja suas tarefas e Pontos</Text>
+        </View>
+
+        <Ionicons name="chevron-forward" size={22} color="#f0f0f0" />
+      </Pressable>
+
+      <Pressable
+        style={styles.cardAcao}
+        onPress={() => router.push("/recompensas")}
+      >
+        <View style={styles.iconeAcao}>
+          <Ionicons name="gift" size={26} color="#f0f0f0" />
+        </View>
+
+        <View style={styles.textosAcao}>
+          <Text style={styles.tituloAcao}>Recompensas</Text>
+          <Text style={styles.subtituloAcao}>
+            Troque seus pontos por recompensas
+          </Text>
+        </View>
+
+        <Ionicons name="chevron-forward" size={22} color="#f0f0f0" />
+      </Pressable>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    backgroundColor: "#190522",
   },
-  safeArea: {
+
+  conteudo: {
+    padding: 20,
+    paddingBottom: 30,
+  },
+
+  cabecalho: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 25,
+  },
+
+  saudacao: {
+    fontSize: 26,
+    fontWeight: "bold",
+    color: "#f0f0f0",
+  },
+
+  nome: {
+    fontSize: 15,
+    color: "#f0f0f0",
+    marginTop: 4,
+  },
+
+  botaoPerfil: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: "#181724f3",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  cardPontos: {
+    backgroundColor: "#181724f3",
+    borderRadius: 18,
+    padding: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 28,
+  },
+
+  iconePontos: {
+    width: 55,
+    height: 55,
+    borderRadius: 28,
+    backgroundColor: "#181724f3",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 15,
+  },
+
+  labelPontos: {
+    fontSize: 15,
+    color: "#f0f0f0",
+  },
+
+  numeroPontos: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#f0f0f0",
+    marginTop: 2,
+  },
+
+  tituloSecao: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#f0f0f0",
+    marginBottom: 12,
+    justifyContent: "center",
+    alignContent: "center",
+    textAlign: "center",
+  },
+
+  resumoContainer: {
+    flexDirection: "row",
+    gap: 10,
+    marginBottom: 28,
+  },
+
+  cardResumo: {
     flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+    backgroundColor: "#181724f3",
+    borderRadius: 16,
+    padding: 16,
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
+
+  iconeTarefa: {
+    width: 45,
+    height: 45,
+    borderRadius: 23,
+    backgroundColor: "#181724f3",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+
+  iconePendente: {
+    width: 45,
+    height: 45,
+    borderRadius: 23,
+    backgroundColor: "#181724f3",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+
+  iconeAtrasada: {
+    width: 45,
+    height: 45,
+    borderRadius: 23,
+    backgroundColor: "#181724f3",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+
+  numeroResumo: {
+    fontSize: 25,
+    fontWeight: "bold",
+    color: "#f0f0f0",
+  },
+
+  labelResumo: {
+    fontSize: 14,
+    color: "#f0f0f0",
+    marginTop: 2,
+  },
+
+  cardAcao: {
+    backgroundColor: "#181724f3",
+    borderRadius: 16,
+    padding: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+
+  iconeAcao: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: "#181724f3",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 14,
+  },
+
+  textosAcao: {
     flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
   },
-  title: {
-    textAlign: 'center',
+
+  tituloAcao: {
+    fontSize: 17,
+    fontWeight: "bold",
+    color: "#F0F0F0",
   },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+
+  subtituloAcao: {
+    fontSize: 13,
+    color: "#F0F0F0",
+    marginTop: 4,
   },
 });
